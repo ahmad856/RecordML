@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="My Activities"
+        android:text="Record Playlist"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -26,7 +26,7 @@
         tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activityRecyclerView"
+        android:id="@+id/recordsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -49,6 +49,8 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="RtlHardcoded"
+        android:focusable="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
