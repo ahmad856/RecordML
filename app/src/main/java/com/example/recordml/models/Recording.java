@@ -1,8 +1,8 @@
 package com.example.recordml.models;
 
-import java.io.File;
+import java.io.Serializable;
 
-public class Recording {
+public class Recording implements Serializable {
     private String stamp;
     private String voiceFile;
     private String txtFile;

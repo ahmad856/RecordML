@@ -8,7 +8,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import com.example.recordml.R;
 import com.example.recordml.adapters.RecordingsAdapter;
 import com.example.recordml.models.Recording;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +31,7 @@ import java.util.Objects;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class RecordingsListView extends AppCompatActivity implements RecyclerView.OnItemTouchListener{
 
+    static final String RECORDING_KEY = "recording";
     private GestureDetector gestureDetector;
     FloatingActionButton addRecording;
     private List<Recording> items;
@@ -97,19 +96,16 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
         rc = findViewById(R.id.recordsRecyclerView);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this);
         rc.setLayoutManager(layoutManager);
+        rc.addOnItemTouchListener(this);
         rc.setItemAnimator(new DefaultItemAnimator());
         rc.setAdapter(adapter);
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return false;
-            }
+            public boolean onDown(MotionEvent motionEvent) { return false; }
 
             @Override
-            public void onShowPress(MotionEvent motionEvent) {
-
-            }
+            public void onShowPress(MotionEvent motionEvent) { }
 
             @Override
             public boolean onSingleTapUp(MotionEvent motionEvent) {
@@ -117,9 +113,9 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
                 if(child != null){
                     //if tap was performed on some recyclerview row item
                     int i = rc.getChildAdapterPosition(child);	//index of item which was clicked
-                    Recording g = items.get(i);
+                    Recording r = items.get(i);
                     Intent intent = new Intent(RecordingsListView.this, RecordingsTab.class);
-                    intent.putExtra("recording",(Serializable)g);
+                    intent.putExtra(RECORDING_KEY, r);
                     startActivity(intent);
                 }
                 return true;
@@ -155,10 +151,7 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode==123 && resultCode==RESULT_OK && data!=null && data.getExtras()!=null){
-            Recording r = new Recording();
-            r.setTxtFile(data.getExtras().getString("fileName"));
-            r.setStamp(data.getExtras().getString("stamp"));
-
+            Recording r = (Recording) data.getExtras().getSerializable(AddRecording.RECORD_KEY);
             items.add(r);
             Objects.requireNonNull(rc.getAdapter()).notifyDataSetChanged();
         }
