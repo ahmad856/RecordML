@@ -32,7 +32,7 @@ public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
 
             while (sc.hasNext()) {
                 current = sc.next();
-                fileContent = fileContent + current;
+                fileContent = fileContent + " " + current;
                 wordCount++;
                 if (current.length() > longestWord.length()) {
                     longestWord = current;
