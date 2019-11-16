@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "519415182967",
+    "firebase_url": "https://recordml-60f3b.firebaseio.com",
+    "project_id": "recordml-60f3b",
+    "storage_bucket": "recordml-60f3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519415182967:android:2fe69858d0092655fc3872",
+        "android_client_info": {
+          "package_name": "com.example.recordml"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519415182967-1gro96s90qmk2npajjprgup41bnb0q2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recordml",
+            "certificate_hash": "df1d10e92bdd4e4446516a671420117c457d45fc"
+          }
+        },
+        {
+          "client_id": "519415182967-aeehm5q9i0g4ivoao0dnnkbl6tqnteko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWms6nkLOVZnJcklxQqBHgjqsq48YqhaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519415182967-aeehm5q9i0g4ivoao0dnnkbl6tqnteko.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
