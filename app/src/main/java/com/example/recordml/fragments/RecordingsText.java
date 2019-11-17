@@ -6,12 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.recordml.R;
 import com.example.recordml.models.Recording;
-
 public class RecordingsText extends Fragment {
 
     private Context context;
@@ -27,8 +26,7 @@ public class RecordingsText extends Fragment {
     }
 
     public static RecordingsText newInstance(String param1, String param2) {
-        RecordingsText fragment = new RecordingsText();
-        return fragment;
+        return new RecordingsText();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class RecordingsText extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 

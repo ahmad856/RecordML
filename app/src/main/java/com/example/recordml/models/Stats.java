@@ -11,13 +11,9 @@ public class Stats implements Serializable {
     private String shortestWord;
     private String leastOccurredWord;
 
-    public String getFileContent() {
-        return fileContent;
-    }
+    public String getFileContent() { return fileContent; }
 
-    public void setFileContent(String fileContent) {
-        this.fileContent = fileContent;
-    }
+    public void setFileContent(String fileContent) { this.fileContent = fileContent; }
 
     public String getMostOccurredWord() { return mostOccurredWord; }
 

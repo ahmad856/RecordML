@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -14,14 +13,12 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.language.v1.CloudNaturalLanguage;
 import com.google.api.services.language.v1.CloudNaturalLanguageRequest;
 import com.google.api.services.language.v1.CloudNaturalLanguageScopes;
-
 import com.google.api.services.language.v1.model.AnnotateTextRequest;
 import com.google.api.services.language.v1.model.AnnotateTextResponse;
 import com.google.api.services.language.v1.model.ClassificationCategory;
 import com.google.api.services.language.v1.model.Document;
 import com.google.api.services.language.v1.model.Entity;
 import com.google.api.services.language.v1.model.Features;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -143,6 +140,9 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
         if(response instanceof AnnotateTextResponse){
             List<ClassificationCategory> categoriesList = ((AnnotateTextResponse) response).getCategories();
             List<Entity> entitiesList = ((AnnotateTextResponse) response).getEntities();
+
+            categoriesList.get(0).getName();
+            entitiesList.get(0).getName();
         }
     }
 

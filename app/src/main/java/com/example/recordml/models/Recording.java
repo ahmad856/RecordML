@@ -4,21 +4,26 @@ import java.io.Serializable;
 
 public class Recording implements Serializable {
     private String stamp;
-    private String voiceFile;
-    private String txtFile;
+    private String voiceFilePath;
+    private String txtFilePath;
     private Stats stats;
+    private String txtFileName;
 
     public String getStamp() { return stamp; }
 
     public void setStamp(String stamp) { this.stamp = stamp; }
 
-    public String getVoiceFile() { return voiceFile; }
+    public String getVoiceFilePath() { return voiceFilePath; }
 
-    public void setVoiceFile(String voiceFile) { this.voiceFile = voiceFile; }
+    public void setVoiceFilePath(String voiceFilePath) { this.voiceFilePath = voiceFilePath; }
 
-    public String getTxtFile() { return txtFile; }
+    public String getTxtFilePath() { return txtFilePath; }
 
-    public void setTxtFile(String txtFile) { this.txtFile = txtFile; }
+    public void setTxtFilePath(String txtFilePath) { this.txtFilePath = txtFilePath; }
+
+    public String getTxtFileName() { return txtFileName; }
+
+    public void setTxtFileName(String txtFileName) { this.txtFileName = txtFileName; }
 
     public Stats getStats() { return stats; }
 

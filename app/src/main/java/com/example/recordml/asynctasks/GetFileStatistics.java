@@ -1,6 +1,8 @@
 package com.example.recordml.asynctasks;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+
 import com.example.recordml.activities.AddRecording;
 import com.example.recordml.models.Stats;
 import java.io.File;
@@ -10,19 +12,18 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
+public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
 
+    @SuppressLint("StaticFieldLeak")
     private AddRecording context;
-    private Map<String, Integer> wordCountMap;
-    private String current, longestWord, shortestWord, fileContent;
     private int wordCount;
-
 
     public GetFileStatistics(AddRecording context) { this.context = context; }
 
     @Override
     protected Stats doInBackground(String... strings) {
-        wordCountMap = new HashMap<>();
+        String current, longestWord, shortestWord, fileContent;
+        Map<String, Integer> wordCountMap = new HashMap<>();
         fileContent = "";
         longestWord = "";
         shortestWord = "pneumonoultramicroscopicsilicovolcanoconiosis";
@@ -34,12 +35,10 @@ public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
                 current = sc.next();
                 fileContent = fileContent + " " + current;
                 wordCount++;
-                if (current.length() > longestWord.length()) {
-                    longestWord = current;
-                } if (current.length() < shortestWord.length()) {
-                    shortestWord = current;
-                } if(wordCountMap.containsKey(current)) {
-                    wordCountMap.put(current, wordCountMap.get(current)+1);
+                if (current.length() > longestWord.length()) { longestWord = current; }
+                if (current.length() < shortestWord.length()) { shortestWord = current; }
+                if (wordCountMap.containsKey(current)) {
+                    wordCountMap.put(current, wordCountMap.get(current) + 1);
                 } else {
                     wordCountMap.put(current, 1);
                 }
@@ -51,8 +50,8 @@ public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
         String mostRepeatedWord = "";
         int count = 0;
         Set<Map.Entry<String, Integer>> entrySet = wordCountMap.entrySet();
-        for (Map.Entry<String, Integer> entry : entrySet){
-            if(entry.getValue() > count) {
+        for (Map.Entry<String, Integer> entry : entrySet) {
+            if (entry.getValue() > count) {
                 mostRepeatedWord = entry.getKey();
                 count = entry.getValue();
             }
@@ -60,13 +59,12 @@ public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
 
         String leastRepeatedWord = "";
         count = 999999999;
-        for (Map.Entry<String, Integer> entry : entrySet){
-            if(entry.getValue() < count) {
+        for (Map.Entry<String, Integer> entry : entrySet) {
+            if (entry.getValue() < count) {
                 leastRepeatedWord = entry.getKey();
                 count = entry.getValue();
             }
         }
-
 
         Stats fileStats = new Stats();
         fileStats.setLeastOccurredWord(leastRepeatedWord);
@@ -80,7 +78,7 @@ public class GetFileStatistics extends AsyncTask<String,Void, Stats> {
     }
 
     @Override
-    protected void onPostExecute(Stats stats){
+    protected void onPostExecute(Stats stats) {
         super.onPostExecute(stats);
         context.setStats(stats);
     }

@@ -1,15 +1,17 @@
 package com.example.recordml.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.recordml.R;
+import com.example.recordml.constants.Constants;
 import com.example.recordml.models.Recording;
 
 public class RecordingStats extends Fragment {
@@ -26,20 +28,14 @@ public class RecordingStats extends Fragment {
         this.record = record;
     }
 
-    public static RecordingStats newInstance(String param1, String param2) {
-        RecordingStats fragment = new RecordingStats();
-        return fragment;
-    }
+    public static RecordingStats newInstance() { return new RecordingStats(); }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         contentView = inflater.inflate(R.layout.fragment_recording_stats, container, false);
-
         return contentView;
     }
 
@@ -58,22 +54,19 @@ public class RecordingStats extends Fragment {
         leastOccurresWord = contentView.findViewById(R.id.leastOccurredWord);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setStats(){
         mostOccurredWord.setText(record.getStats().getMostOccurredWord());
-        wordCount.setText("" +record.getStats().getWordCount());
+        wordCount.setText(Constants.EMPTY_STRING +record.getStats().getWordCount());
         longestWord.setText(record.getStats().getLongestWord());
         shortestWord.setText(record.getStats().getShortestWord());
         leastOccurresWord.setText(record.getStats().getLeastOccurredWord());
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+    public void onAttach(@NonNull Context context) { super.onAttach(context); }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+    public void onDetach() { super.onDetach(); }
 
 }
