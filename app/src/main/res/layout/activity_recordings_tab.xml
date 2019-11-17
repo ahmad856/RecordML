@@ -11,20 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:tabIndicatorColor="?android:attr/colorActivatedHighlight">
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabTextColor="@color/colorAccent">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/txtTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text"
+            android:text="Transcript"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/statsTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stats"
+            android:text="Summary"
             tools:ignore="HardcodedText" />
 
     </com.google.android.material.tabs.TabLayout>
