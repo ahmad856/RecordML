@@ -1,9 +1,12 @@
 package com.example.recordml.asynctasks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.recordml.activities.AddRecording;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -29,6 +32,7 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
 
     private Context context;
     private String inputFile;
+    private ProgressDialog progress;
 
     private static final String TAG = "AccessTokenLoader";
 
@@ -89,7 +93,7 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
             final String accessToken = mCredential.getAccessToken();
             prefs.edit().putString(PREF_ACCESS_TOKEN, accessToken).apply();
 
-
+            Log.d("GetFileCategory", inputFile);
 
             Document doc = new Document()
                     .setContent(inputFile)
@@ -127,10 +131,12 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
                         // API calls are executed here in this worker thread
                         deliverResponse(mRequests.take().execute());
                     } catch (InterruptedException e) {
+                        progress.dismiss();
                         Log.e(TAG, "Interrupted.", e);
                         break;
                     } catch (IOException e) {
                         Log.e(TAG, "Failed to execute a request.", e);
+                        progress.dismiss();
                     }
                 }
             }
@@ -143,9 +149,27 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
             List<ClassificationCategory> categoriesList = ((AnnotateTextResponse) response).getCategories();
             List<Entity> entitiesList = ((AnnotateTextResponse) response).getEntities();
 
+            if(context instanceof AddRecording)
+                ((AddRecording)context).setCategoryResponse(categoriesList, entitiesList);
+
 //            categoriesList.get(0).getName();
 //            entitiesList.get(0).getName();
+
+            progress.dismiss();
         }
     }
 
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        progress = new ProgressDialog(context);
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //progress.setMax(100);
+        progress.setMessage("Working on ML");
+
+        progress.show();
+
+    }
 }

@@ -31,7 +31,7 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (items != null && items.size() > 0) {
             RecordingViewHolder myViewHolder = (RecordingViewHolder) holder;
             myViewHolder.setFileName(items.get(position).getTxtFileName());
-            //holder.setCategory().setText(items.get(position).get());
+            myViewHolder.setCategory(items.get(position).getCategories());
             myViewHolder.setTimestamp(items.get(position).getStamp());
             myViewHolder.setFilePath(items.get(position).getTxtFilePath());
         }
@@ -57,7 +57,7 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         void setFileName(String fileName) { this.fileName.setText(fileName); }
 
-        void setCategoty(String description) { this.category.setText(description); }
+        void setCategory(String category) { this.category.setText(category); }
 
         void setFilePath(String filePath) { this.filePath.setText(filePath); }
 

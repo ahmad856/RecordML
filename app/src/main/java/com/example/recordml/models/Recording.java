@@ -8,6 +8,22 @@ public class Recording implements Serializable {
     private String txtFilePath;
     private Stats stats;
     private String txtFileName;
+    private String categories;
+    private String entities;
+
+    public boolean isDownloaded() { return downloaded; }
+
+    public void setDownloaded(boolean downloaded) { this.downloaded = downloaded; }
+
+    private boolean downloaded;
+
+    public String getCategories() { return categories; }
+
+    public void setCategories(String categories) { this.categories = categories; }
+
+    public String getEntities() { return entities; }
+
+    public void setEntities(String entities) { this.entities = entities; }
 
     public String getStamp() { return stamp; }
 

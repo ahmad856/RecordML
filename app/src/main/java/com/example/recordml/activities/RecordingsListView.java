@@ -51,7 +51,7 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
     RecordingsAdapter adapter;
     static RecyclerView rc;
     Task<ListResult> allFiles;
-    public static Map<String, String> downloadedFiles;
+    public static Map<String, Recording> downloadedFiles;
     private File file;
     private String name;
     BroadcastReceiver download;
@@ -76,8 +76,8 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
                             if (status == DownloadManager.STATUS_SUCCESSFUL) {
                                 String file = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_TITLE));
                                 Log.d("Downloaded",file);
-                                if(RecordingsListView.downloadedFiles.get(file)!=null && !RecordingsListView.downloadedFiles.get(file).isEmpty()) {
-                                    RecordingsListView.downloadedFiles.put(file, Constants.YES);
+                                if(downloadedFiles.get(file)!=null && !downloadedFiles.get(file).isDownloaded()){
+                                    downloadedFiles.get(file).setDownloaded(true);
                                     onDownloadComplete(file);
                                 }
                             } else {
@@ -214,21 +214,38 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
     @Override
     public void onComplete(@NonNull Task<ListResult> task) {
         for (StorageReference child : Objects.requireNonNull(task.getResult()).getItems()) {
-            name = child.getName();
+            final StorageReference childTmp = child;
+
+            String[] props = child.getName().split("~");
+
+            name = props[0];
+            String categories = "";
+            if(props[1]!=null && !props[1].isEmpty()) {
+                categories = props[1];
+                categories = categories.replace(Constants.EXTENTION_TXT, Constants.EMPTY_STRING);
+            }
+//            String entities = "";
+//            if(props[2]!=null && !props[2].isEmpty()){
+//                entities = props[2];
+//                entities = entities.replace(Constants.EXTENTION_TXT, Constants.EMPTY_STRING);
+//            }
 
             file = new File(Constants.PATH, child.getName());
+            Recording r = new Recording();
+            r.setTxtFilePath(file.getPath());
+            r.setTxtFileName(name + Constants.EXTENTION_TXT);
+            r.setStamp(name);
+            //r.setEntities(entities);
+            r.setCategories(categories);
 
             if (!file.exists()) {
-                downloadedFiles.put(name, Constants.NO);
+                downloadedFiles.put(child.getName(), r);
                 //download file
                 child.getDownloadUrl().addOnSuccessListener(
                         new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                //Toast.makeText(RecordingsListView.this, "Download Success", Toast.LENGTH_SHORT).show();
-                                downloadFile(RecordingsListView.this, name, Constants.FOLDER_NAME, uri.toString());
-                                //add to recycler view
-                                //addRecording(file.getPath(), name, name.replace(Constants.EXTENTION_TXT, Constants.EMPTY_STRING));
+                                downloadFile(RecordingsListView.this, childTmp.getName(), Constants.FOLDER_NAME, uri.toString());
                             }
                         }
                 ).addOnFailureListener(new OnFailureListener() {
@@ -240,29 +257,28 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
 
 
             } else {
-                new GetFileStatistics(RecordingsListView.this).execute(file.getPath());
+                r.setDownloaded(true);
+                downloadedFiles.put(name, r);
+
+                new GetFileStatistics(RecordingsListView.this, name).execute(file.getPath());
             }
         }
     }
 
-    private void addRecording(String filePath, String fileName, String timeStamp, Stats s){
-        Recording r = new Recording();
-        r.setTxtFilePath(filePath);
-        r.setTxtFileName(fileName);
-        r.setStamp(timeStamp);
-        r.setStats(s);
+    private void addRecording(Recording r){
         items.add(r);
         Objects.requireNonNull(rc.getAdapter()).notifyDataSetChanged();
     }
 
-    public void setStats(Stats s){
-        addRecording(file.getPath(), name, name.replace(Constants.EXTENTION_TXT, Constants.EMPTY_STRING), s);
+    public void setStats(Stats s, String fileName){
+        Recording record = downloadedFiles.get(fileName);
+        record.setStats(s);
+        downloadedFiles.put(fileName,record);
+        addRecording(record);
     }
 
     public void onDownloadComplete(String fileIndex) {
-        if(downloadedFiles.get(fileIndex)!=null && !downloadedFiles.get(fileIndex).isEmpty() && Constants.YES.equalsIgnoreCase(downloadedFiles.get(fileIndex))){
-            new GetFileStatistics(RecordingsListView.this).execute(file.getPath());
-        }
+        new GetFileStatistics(RecordingsListView.this, fileIndex).execute(file.getPath());
     }
 
     @Override

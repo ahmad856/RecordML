@@ -25,6 +25,8 @@ import com.example.recordml.models.Recording;
 import com.example.recordml.models.Stats;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.api.services.language.v1.model.ClassificationCategory;
+import com.google.api.services.language.v1.model.Entity;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -37,6 +39,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
@@ -52,6 +55,14 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
     //private MediaPlayer mediaPlayer;
 
     private StorageReference mStorage;
+
+    /////////////////categories
+    List<ClassificationCategory> categoriesList;
+    List<Entity> entitiesList;
+//    String entities = "";
+    String categories = "";
+
+
 
     @SuppressLint("SimpleDateFormat")
     private final DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
@@ -91,7 +102,7 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         //translate = findViewById(R.id.translate);
         stop.setEnabled(false);
         play.setEnabled(false);
-        add.setEnabled(false);
+        //add.setEnabled(false);
     }
 
     private void setOnClickListeners() {
@@ -153,8 +164,33 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 Recording r = new Recording();
                 r.setStamp(date);
                 r.setTxtFilePath(outputFileTxt);
-                r.setTxtFileName(date + Constants.EXTENTION_TXT);
                 r.setStats(stats);
+                for(ClassificationCategory cc : categoriesList){
+                    categories = categories + cc.getName() + ",";
+                }
+
+                r.setCategories(categories);
+//                r.setEntities(entities);
+                //+"~"+entities
+                r.setTxtFileName(date + "~"+categories + Constants.EXTENTION_TXT);
+
+                Uri file = Uri.fromFile(new File(outputFileTxt));
+                //+"~"+entities
+                StorageReference textSumary = mStorage.child("TextSummarization/" + date + "~"+categories + Constants.EXTENTION_TXT);
+
+                textSumary.putFile(file)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                exception.printStackTrace();
+                            }
+                        });
+
                 Intent i = new Intent();
                 i.putExtra(RECORD_KEY, r);
                 AddRecording.this.setResult(RESULT_OK, i);
@@ -216,23 +252,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
             }
 
             //Async Task for file statistics
-            new GetFileStatistics(this).execute(outputFileTxt);
-
-            Uri file = Uri.fromFile(new File(outputFileTxt));
-            StorageReference textSumary = mStorage.child("TextSummarization/" + date + Constants.EXTENTION_TXT);
-
-            textSumary.putFile(file)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            exception.printStackTrace();
-                        }
-                    });
+            //+"~"+entities
+            new GetFileStatistics(this, date + "~"+categories + Constants.EXTENTION_TXT).execute(outputFileTxt);
         }
     }
 
@@ -262,7 +283,13 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
     public void setStats(Stats stats) {
         this.stats = stats;
         //Async Task for file categories
-        //new GetFileCategory(this, stats.getFileContent()).execute(R.raw.credential);
+        new GetFileCategory(this, stats.getFileContent()).execute(R.raw.credential);
+        //add.setEnabled(true);
+    }
+
+    public void setCategoryResponse(List<ClassificationCategory> categoriesList, List<Entity> entitiesList){
+        this.categoriesList = categoriesList;
+        this.entitiesList = entitiesList;
         //add.setEnabled(true);
     }
 }

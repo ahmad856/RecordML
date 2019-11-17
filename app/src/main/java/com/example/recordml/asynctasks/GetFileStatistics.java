@@ -19,8 +19,12 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
     @SuppressLint("StaticFieldLeak")
     private Context context;
     private int wordCount;
+    private String fileName;
 
-    public GetFileStatistics(Context context) { this.context = context; }
+    public GetFileStatistics(Context context, String fileName) {
+        this.context = context;
+        this.fileName = fileName;
+    }
 
     @Override
     protected Stats doInBackground(String... strings) {
@@ -86,7 +90,7 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
             ((AddRecording) context).setStats(stats);
         }
         else if(context instanceof RecordingsListView){
-            ((RecordingsListView)context).setStats(stats);
+            ((RecordingsListView)context).setStats(stats, fileName);
         }
     }
 }
