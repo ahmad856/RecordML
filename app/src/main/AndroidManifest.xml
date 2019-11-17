@@ -33,12 +33,19 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broascastrecievers.Download"
-            android:priority="1000">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
+<!--        <receiver android:name=".broascastrecievers.Download"-->
+<!--            android:priority="1000">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+<!--        <receiver android:name=".activities.RecordingsListView$Download"-->
+<!--            android:priority="1000">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
 
     </application>
 
