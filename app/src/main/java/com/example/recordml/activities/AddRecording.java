@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.example.recordml.R;
+import com.example.recordml.asynctasks.GetFileCategory;
 import com.example.recordml.asynctasks.GetFileStatistics;
 import com.example.recordml.models.Recording;
 import com.example.recordml.models.Stats;
@@ -220,6 +221,7 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
             }
 
             new GetFileStatistics(this).execute(outputFileTxt);
+//            new GetFileCategory(this, fileText).execute(R.raw.credential);
         }
     }
 

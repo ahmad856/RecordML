@@ -23,6 +23,11 @@ android {
 //    }
 }
 
+ext {
+    supportLibraryVersion = '25.3.1'
+    googleApiClientVersion = '1.22.0'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -32,5 +37,30 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    //implementation 'com.google.cloud:google-cloud-speech:1.13.0'
+//    implementation 'com.google.cloud:google-cloud-speech:1.13.0'
+
+    // Dependencies for Google API Client Libraries
+    compile("com.google.http-client:google-http-client:$googleApiClientVersion") {
+        exclude module: 'httpclient'
+        exclude module: 'jsr305'
+    }
+    compile("com.google.api-client:google-api-client-android:$googleApiClientVersion"){
+        exclude module: 'httpclient'
+        exclude module: 'jsr305'
+    }
+    compile("com.google.apis:google-api-services-language:v1-rev501-1.25.0") {
+        exclude module: 'httpclient'
+        exclude module: 'jsr305'
+    }
+
 }
+
+task copySecretKey(type: Copy) {
+    def File secretKey = file "$System.env.GOOGLE_APPLICATION_CREDENTIALS"
+    from secretKey.getParent()
+    include secretKey.getName()
+    into 'src/main/res/raw'
+    rename secretKey.getName(), "credential.json"
+}
+preBuild.dependsOn(copySecretKey)
+
