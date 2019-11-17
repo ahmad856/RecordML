@@ -77,7 +77,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:hint="Category"
+        android:hint="No category determined. Try entering longer content."
         android:paddingLeft="8dp"
         android:paddingTop="8dp"
         android:paddingRight="8dp"

@@ -165,7 +165,7 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 r.setStamp(date);
                 r.setTxtFilePath(outputFileTxt);
                 r.setStats(stats);
-                for(ClassificationCategory cc : categoriesList){
+                if(categoriesList!=null)for(ClassificationCategory cc : categoriesList){
                     categories = categories + cc.getName() + ",";
                 }
 
