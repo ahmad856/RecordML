@@ -9,4 +9,6 @@ public class Constants {
     public final static String EXTENTION_3GP = ".3gp";
     public final static String EMPTY_STRING = "";
     public final static String FOLDER_NAME = "TextSummarization";
+    public final static String YES = "Y";
+    public final static String NO = "N";
 }

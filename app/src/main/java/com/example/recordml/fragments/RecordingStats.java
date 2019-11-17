@@ -56,11 +56,11 @@ public class RecordingStats extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void setStats(){
-//        mostOccurredWord.setText(record.getStats().getMostOccurredWord());
-//        wordCount.setText(Constants.EMPTY_STRING +record.getStats().getWordCount());
-//        longestWord.setText(record.getStats().getLongestWord());
-//        shortestWord.setText(record.getStats().getShortestWord());
-//        leastOccurresWord.setText(record.getStats().getLeastOccurredWord());
+        mostOccurredWord.setText(record.getStats().getMostOccurredWord());
+        wordCount.setText(Constants.EMPTY_STRING +record.getStats().getWordCount());
+        longestWord.setText(record.getStats().getLongestWord());
+        shortestWord.setText(record.getStats().getShortestWord());
+        leastOccurresWord.setText(record.getStats().getLeastOccurredWord());
     }
 
     @Override

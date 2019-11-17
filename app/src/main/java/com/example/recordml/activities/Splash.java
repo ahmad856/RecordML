@@ -6,11 +6,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.example.recordml.constants.Constants;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.io.File;
 
 public class Splash extends AppCompatActivity {
 
@@ -47,10 +53,23 @@ public class Splash extends AppCompatActivity {
         //mAuth = FirebaseAuth.getInstance();
     }
 
+    public void createFolder(String fname) {
+        String myfolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fname;
+        File f = new File(myfolder);
+        if (!f.exists())
+            if (!f.mkdir()) {
+                Log.d("createFolder", myfolder + " can't be created.");
+            } else
+                Log.d("createFolder", myfolder + " can be created.");
+        else
+            Log.d("createFolder", myfolder + " already exits.");
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
+        createFolder(Constants.FOLDER_NAME);
 
 //        FirebaseUser user = mAuth.getCurrentUser();
 //        if (user != null) {

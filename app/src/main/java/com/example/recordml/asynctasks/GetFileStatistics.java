@@ -1,9 +1,11 @@
 package com.example.recordml.asynctasks;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.recordml.activities.AddRecording;
+import com.example.recordml.activities.RecordingsListView;
 import com.example.recordml.models.Stats;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,10 +17,10 @@ import java.util.Set;
 public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
 
     @SuppressLint("StaticFieldLeak")
-    private AddRecording context;
+    private Context context;
     private int wordCount;
 
-    public GetFileStatistics(AddRecording context) { this.context = context; }
+    public GetFileStatistics(Context context) { this.context = context; }
 
     @Override
     protected Stats doInBackground(String... strings) {
@@ -80,6 +82,11 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
     @Override
     protected void onPostExecute(Stats stats) {
         super.onPostExecute(stats);
-        context.setStats(stats);
+        if(context instanceof AddRecording) {
+            ((AddRecording) context).setStats(stats);
+        }
+        else if(context instanceof RecordingsListView){
+            ((RecordingsListView)context).setStats(stats);
+        }
     }
 }

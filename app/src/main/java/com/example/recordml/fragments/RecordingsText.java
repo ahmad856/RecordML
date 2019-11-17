@@ -47,7 +47,7 @@ public class RecordingsText extends Fragment {
 
         TextView fileText = contentView.findViewById(R.id.fileText);
 
-        //fileText.setText(record.getStats().getFileContent());
+        fileText.setText(record.getStats().getFileContent());
     }
 
     @Override

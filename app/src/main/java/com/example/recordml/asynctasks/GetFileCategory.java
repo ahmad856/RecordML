@@ -89,6 +89,8 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
             final String accessToken = mCredential.getAccessToken();
             prefs.edit().putString(PREF_ACCESS_TOKEN, accessToken).apply();
 
+
+
             Document doc = new Document()
                     .setContent(inputFile)
                     .setType("PLAIN_TEXT");
@@ -141,8 +143,8 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
             List<ClassificationCategory> categoriesList = ((AnnotateTextResponse) response).getCategories();
             List<Entity> entitiesList = ((AnnotateTextResponse) response).getEntities();
 
-            categoriesList.get(0).getName();
-            entitiesList.get(0).getName();
+//            categoriesList.get(0).getName();
+//            entitiesList.get(0).getName();
         }
     }
 

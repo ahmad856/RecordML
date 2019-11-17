@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.recordml.R;
+import com.example.recordml.asynctasks.GetFileCategory;
 import com.example.recordml.asynctasks.GetFileStatistics;
 import com.example.recordml.constants.Constants;
 import com.example.recordml.models.Recording;
@@ -65,7 +66,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
         date = df.format(Calendar.getInstance().getTime());
 
-        createFolder(Constants.FOLDER_NAME);
         File file = new File(Constants.PATH, date + Constants.EXTENTION_TXT);
         try {
             if (file.createNewFile()) {
@@ -170,18 +170,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 //        });
     }
 
-    public void createFolder(String fname) {
-        String myfolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fname;
-        File f = new File(myfolder);
-        if (!f.exists())
-            if (!f.mkdir()) {
-                Log.d("createFolder", myfolder + " can't be created.");
-            } else
-                Log.d("createFolder", myfolder + " can be created.");
-        else
-            Log.d("createFolder", myfolder + " already exits.");
-    }
-
     private void voiceToText() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -229,8 +217,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
             //Async Task for file statistics
             new GetFileStatistics(this).execute(outputFileTxt);
-            //Async Task for file categories
-            //new GetFileCategory(this, fileText).execute(R.raw.credential);
 
             Uri file = Uri.fromFile(new File(outputFileTxt));
             StorageReference textSumary = mStorage.child("TextSummarization/" + date + Constants.EXTENTION_TXT);
@@ -275,6 +261,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
     public void setStats(Stats stats) {
         this.stats = stats;
-        add.setEnabled(true);
+        //Async Task for file categories
+        //new GetFileCategory(this, stats.getFileContent()).execute(R.raw.credential);
+        //add.setEnabled(true);
     }
 }
