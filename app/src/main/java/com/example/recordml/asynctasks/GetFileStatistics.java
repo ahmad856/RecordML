@@ -1,6 +1,7 @@
 package com.example.recordml.asynctasks;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -20,6 +21,7 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
     private Context context;
     private int wordCount;
     private String fileName;
+    private ProgressDialog progress;
 
     public GetFileStatistics(Context context, String fileName) {
         this.context = context;
@@ -92,5 +94,20 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
         else if(context instanceof RecordingsListView){
             ((RecordingsListView)context).setStats(stats, fileName);
         }
+        progress.dismiss();
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        progress = new ProgressDialog(context);
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //progress.setMax(100);
+        progress.setMessage("Working on Stats");
+
+        progress.show();
+
     }
 }
