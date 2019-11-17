@@ -232,7 +232,7 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
 
             file = new File(Constants.PATH, child.getName());
             Recording r = new Recording();
-            r.setTxtFilePath(file.getPath());
+            r.setTxtFilePath(Constants.PATH);
             r.setTxtFileName(name + Constants.EXTENTION_TXT);
             r.setStamp(name);
             //r.setEntities(entities);

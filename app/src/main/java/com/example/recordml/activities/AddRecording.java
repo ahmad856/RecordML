@@ -46,7 +46,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
     static final String RECORD_KEY = "record";
 
-    private Button play, stop, record, add;
+    private Button record, add;
+    //play, stop,
     //private Button translate;
     //private MediaRecorder myAudioRecorder;
     private String outputFileAudio, outputFileTxt;
@@ -94,14 +95,14 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
     private void initialize() {
         mStorage = Splash.getStorage().getReference();
 
-        play = findViewById(R.id.play);
-        stop = findViewById(R.id.stop);
+//        play = findViewById(R.id.play);
+//        stop = findViewById(R.id.stop);
         record = findViewById(R.id.record);
         add = findViewById(R.id.add);
 
         //translate = findViewById(R.id.translate);
-        stop.setEnabled(false);
-        play.setEnabled(false);
+//        stop.setEnabled(false);
+//        play.setEnabled(false);
         //add.setEnabled(false);
     }
 
@@ -122,57 +123,58 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 //                    ise.printStackTrace();
 //                }
                 record.setEnabled(false);
-                stop.setEnabled(true);
+                //stop.setEnabled(true);
             }
         });
 
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                myAudioRecorder.stop();
-//                myAudioRecorder.release();
-//                myAudioRecorder = null;
-                record.setEnabled(true);
-                stop.setEnabled(false);
-                play.setEnabled(true);
-                //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
-            }
-        });
+//        stop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                myAudioRecorder.stop();
+////                myAudioRecorder.release();
+////                myAudioRecorder = null;
+//                record.setEnabled(true);
+//                stop.setEnabled(false);
+//                play.setEnabled(true);
+//                //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                record.setEnabled(false);
-                stop.setEnabled(false);
-
-//                mediaPlayer = new MediaPlayer();
-//                mediaPlayer.setOnCompletionListener(AddRecording.this);
-//                try {
-//                    mediaPlayer.setDataSource(outputFile);
-//                    mediaPlayer.prepare();
-//                    mediaPlayer.start();
-//                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-            }
-        });
+//        play.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                record.setEnabled(false);
+//                stop.setEnabled(false);
+//
+////                mediaPlayer = new MediaPlayer();
+////                mediaPlayer.setOnCompletionListener(AddRecording.this);
+////                try {
+////                    mediaPlayer.setDataSource(outputFile);
+////                    mediaPlayer.prepare();
+////                    mediaPlayer.start();
+////                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
+////                } catch (Exception e) {
+////                    e.printStackTrace();
+////                }
+//            }
+//        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Recording r = new Recording();
                 r.setStamp(date);
-                r.setTxtFilePath(outputFileTxt);
+                r.setTxtFilePath(Constants.PATH);
                 r.setStats(stats);
                 if(categoriesList!=null)for(ClassificationCategory cc : categoriesList){
-                    categories = categories + cc.getName() + ",";
+                    categories = categories + cc.getName().replaceAll("/","") + ",";
                 }
 
                 r.setCategories(categories);
 //                r.setEntities(entities);
                 //+"~"+entities
-                r.setTxtFileName(date + "~"+categories + Constants.EXTENTION_TXT);
+                r.setTxtFileName(date + Constants.EXTENTION_TXT);
+
 
                 Uri file = Uri.fromFile(new File(outputFileTxt));
                 //+"~"+entities
@@ -190,6 +192,10 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                                 exception.printStackTrace();
                             }
                         });
+
+                File f1 = new File(outputFileTxt);
+                File f2 = new File(date + '~' +categories + Constants.EXTENTION_TXT);
+                f1.renameTo(f2);
 
                 Intent i = new Intent();
                 i.putExtra(RECORD_KEY, r);
@@ -238,8 +244,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 //            myAudioRecorder.release();
 //            myAudioRecorder = null;
             record.setEnabled(true);
-            stop.setEnabled(false);
-            play.setEnabled(true);
+//            stop.setEnabled(false);
+//            play.setEnabled(true);
             //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
             //////////////////////
 
