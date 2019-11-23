@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.example.recordml.activities.AddRecording;
 import com.example.recordml.activities.RecordingsListView;
+import com.example.recordml.methods.Methods;
 import com.example.recordml.models.Stats;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,18 +31,33 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
 
     @Override
     protected Stats doInBackground(String... strings) {
-        String current, longestWord, shortestWord, fileContent;
+        String /*current,*/ longestWord, shortestWord, fileContent;
         Map<String, Integer> wordCountMap = new HashMap<>();
-        fileContent = "";
+        //fileContent = "";
         longestWord = "";
         shortestWord = "pneumonoultramicroscopicsilicovolcanoconiosis";
+        fileContent = strings[0];
+        String[] fileContentSplit = strings[0].split(" ");
 
-        try {
-            Scanner sc = new Scanner(new File(strings[0]));
+        for(String s : fileContentSplit){
+            if(!Methods.isNullOrEmplty(s)){
+                wordCount++;
+                if (s.length() > longestWord.length()) { longestWord = s; }
+                if (s.length() < shortestWord.length()) { shortestWord = s; }
+                if (wordCountMap.containsKey(s)) {
+                    wordCountMap.put(s, wordCountMap.get(s) + 1);
+                } else {
+                    wordCountMap.put(s, 1);
+                }
+            }
+        }
+
+        /*try {
+            //Scanner sc = new Scanner(new File(strings[0]));
 
             while (sc.hasNext()) {
                 current = sc.next();
-                fileContent = fileContent + " " + current;
+                //fileContent = fileContent + " " + current;
                 wordCount++;
                 if (current.length() > longestWord.length()) { longestWord = current; }
                 if (current.length() < shortestWord.length()) { shortestWord = current; }
@@ -53,7 +69,7 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
         String mostRepeatedWord = "";
         int count = 0;

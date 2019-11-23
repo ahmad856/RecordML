@@ -30,9 +30,10 @@ public class Splash extends AppCompatActivity {
         return mStorage;
     }
 
-    private String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO,
+    private String[] PERMISSIONS = {
+            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
 
     public static boolean hasPermissions(Context context, String... permissions) {
@@ -82,10 +83,11 @@ public class Splash extends AppCompatActivity {
         //permissions
         if (!hasPermissions(this, PERMISSIONS))
             ActivityCompat.requestPermissions(this, PERMISSIONS, 333);
-
-        Intent auth = new Intent(this, RecordingsListView.class);
-        startActivity(auth);
-        finish();
+        else{
+            Intent auth = new Intent(this, DownloadFiles.class);
+            startActivity(auth);
+            finish();
+        }
     }
 
 //    private void signInAnonymously() {
@@ -108,7 +110,11 @@ public class Splash extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 333) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if(hasPermissions(this, PERMISSIONS)){
+                    Intent auth = new Intent(this, DownloadFiles.class);
+                    startActivity(auth);
+                    finish();
+                }
             } else {
                 Toast.makeText(this, "All permissions should be allowed to use this app.", Toast.LENGTH_LONG).show();
                 startInstalledAppDetailsActivity();

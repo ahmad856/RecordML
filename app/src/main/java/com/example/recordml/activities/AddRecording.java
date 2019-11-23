@@ -50,7 +50,7 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
     //play, stop,
     //private Button translate;
     //private MediaRecorder myAudioRecorder;
-    private String outputFileAudio, outputFileTxt;
+    //private String outputFileAudio, outputFileTxt;
     private String date;
     private Stats stats;
     //private MediaPlayer mediaPlayer;
@@ -78,18 +78,18 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
         date = df.format(Calendar.getInstance().getTime());
 
-        File file = new File(Constants.PATH, date + Constants.EXTENTION_TXT);
-        try {
-            if (file.createNewFile()) {
-                Log.d("File", "file is created");
-            } else {
-                Log.d("File", "file is already present");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        outputFileAudio = Constants.PATH + date + Constants.EXTENTION_3GP;
-        outputFileTxt = Constants.PATH + date + Constants.EXTENTION_TXT;
+//        File file = new File(Constants.PATH, date + Constants.EXTENTION_TXT);
+//        try {
+//            if (file.createNewFile()) {
+//                Log.d("File", "file is created");
+//            } else {
+//                Log.d("File", "file is already present");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        //outputFileAudio = Constants.PATH + date + Constants.EXTENTION_3GP;
+        //outputFileTxt = Constants.PATH + date + Constants.EXTENTION_TXT;
     }
 
     private void initialize() {
@@ -175,12 +175,27 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 //+"~"+entities
                 r.setTxtFileName(date + Constants.EXTENTION_TXT);
 
+                File file = new File(Constants.PATH, date + "~"+categories + Constants.EXTENTION_TXT);
+                try {
+                    if (file.createNewFile()) {
+                        Log.d("File", "file is created");
+                    } else {
+                        Log.d("File", "file is already present");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    writeFile(file, stats.getFileContent());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                Uri file = Uri.fromFile(new File(outputFileTxt));
+                Uri uri= Uri.fromFile(file);
                 //+"~"+entities
                 StorageReference textSumary = mStorage.child("TextSummarization/" + date + "~"+categories + Constants.EXTENTION_TXT);
 
-                textSumary.putFile(file)
+                textSumary.putFile(uri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -193,9 +208,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                             }
                         });
 
-                File f1 = new File(outputFileTxt);
-                File f2 = new File(date + '~' +categories + Constants.EXTENTION_TXT);
-                f1.renameTo(f2);
 
                 Intent i = new Intent();
                 i.putExtra(RECORD_KEY, r);
@@ -225,9 +237,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         }
     }
 
-    public static void writeFile(String file, String s) throws IOException {
-        File f = new File(file);
-        FileOutputStream fos = new FileOutputStream(f, true);
+    public static void writeFile(File file, String s) throws IOException {
+        FileOutputStream fos = new FileOutputStream(file, true);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
         bw.write(s);
         bw.close();
@@ -251,15 +262,17 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
 
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             ((TextView) findViewById(R.id.textViewCheck)).setText(((TextView) findViewById(R.id.textViewCheck)).getText().toString() + " " + result.get(0));
-            try {
-                writeFile(outputFileTxt, result.get(0));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                writeFile(outputFileTxt, result.get(0));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             //Async Task for file statistics
             //+"~"+entities
-            new GetFileStatistics(this, date + "~"+categories + Constants.EXTENTION_TXT).execute(outputFileTxt);
+//            new GetFileStatistics(this, date + "~"+categories + Constants.EXTENTION_TXT).execute(outputFileTxt);
+            new GetFileStatistics(this, null).execute(result.get(0));
+
         }
     }
 

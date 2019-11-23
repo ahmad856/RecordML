@@ -26,6 +26,9 @@
         <activity
             android:name=".activities.AddRecording" />
 
+        <activity
+            android:name=".activities.DownloadFiles" />
+
         <activity android:name=".activities.Splash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -29,11 +29,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > 0) {
-            RecordingViewHolder myViewHolder = (RecordingViewHolder) holder;
-            myViewHolder.setFileName(items.get(position).getTxtFileName());
-            myViewHolder.setCategory(items.get(position).getCategories());
-            myViewHolder.setTimestamp(items.get(position).getStamp());
-            myViewHolder.setFilePath(items.get(position).getTxtFilePath());
+            if(holder != null){
+                RecordingViewHolder myViewHolder = (RecordingViewHolder) holder;
+                myViewHolder.setFileName(items.get(position).getTxtFileName());
+                myViewHolder.setCategory(items.get(position).getCategories());
+                myViewHolder.setTimestamp(items.get(position).getStamp());
+                myViewHolder.setFilePath(items.get(position).getTxtFilePath());
+            }
         }
     }
 
