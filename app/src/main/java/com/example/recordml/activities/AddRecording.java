@@ -100,6 +100,8 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         record = findViewById(R.id.record);
         add = findViewById(R.id.add);
 
+        add.setEnabled(false);
+
         //translate = findViewById(R.id.translate);
 //        stop.setEnabled(false);
 //        play.setEnabled(false);
@@ -229,6 +231,10 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, Long.valueOf("2000"));
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, Long.valueOf("2000"));
+        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, Long.valueOf("2000"));
+
         try {
             startActivityForResult(intent, 101);
         } catch (ActivityNotFoundException e) {
@@ -261,7 +267,13 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
             //////////////////////
 
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            ((TextView) findViewById(R.id.textViewCheck)).setText(((TextView) findViewById(R.id.textViewCheck)).getText().toString() + " " + result.get(0));
+            if (result!=null) {
+                ((TextView) findViewById(R.id.textViewCheck)).setText(((TextView) findViewById(R.id.textViewCheck)).getText().toString() + " " + result.get(0));
+                if(((TextView) findViewById(R.id.textViewCheck)).getText().toString().length()>0)add.setEnabled(true);
+                new GetFileStatistics(this, null).execute(((TextView) findViewById(R.id.textViewCheck)).getText().toString());
+            }
+
+
 //            try {
 //                writeFile(outputFileTxt, result.get(0));
 //            } catch (IOException e) {
@@ -271,7 +283,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
             //Async Task for file statistics
             //+"~"+entities
 //            new GetFileStatistics(this, date + "~"+categories + Constants.EXTENTION_TXT).execute(outputFileTxt);
-            new GetFileStatistics(this, null).execute(result.get(0));
 
         }
     }
