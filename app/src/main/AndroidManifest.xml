@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".speech.MainActivity"></activity>
+        <activity android:name=".speech.MainActivity" />
         <activity android:name=".activities.RecordingsListView" />
         <activity android:name=".activities.RecordingsTab" />
         <activity android:name=".activities.AddRecording" />

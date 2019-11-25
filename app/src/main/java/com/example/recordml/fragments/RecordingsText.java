@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.recordml.R;
 import com.example.recordml.models.Recording;
+
 public class RecordingsText extends Fragment {
 
     private Context context;
@@ -18,7 +21,8 @@ public class RecordingsText extends Fragment {
     private View contentView;
     private Recording record;
 
-    public RecordingsText() { }
+    public RecordingsText() {
+    }
 
     public RecordingsText(Context context, Recording record) {
         this.context = context;

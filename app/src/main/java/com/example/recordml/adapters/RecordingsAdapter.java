@@ -4,10 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.recordml.R;
 import com.example.recordml.models.Recording;
+
 import java.util.List;
 
 public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -29,7 +32,7 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > 0) {
-            if(holder != null){
+            if (holder != null) {
                 RecordingViewHolder myViewHolder = (RecordingViewHolder) holder;
                 myViewHolder.setFileName(items.get(position).getTxtFileName());
                 myViewHolder.setCategory(items.get(position).getCategories());
@@ -57,12 +60,20 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             timestamp = itemView.findViewById(R.id.timeStamp);
         }
 
-        void setFileName(String fileName) { this.fileName.setText(fileName); }
+        void setFileName(String fileName) {
+            this.fileName.setText(fileName);
+        }
 
-        void setCategory(String category) { this.category.setText(category); }
+        void setCategory(String category) {
+            this.category.setText(category);
+        }
 
-        void setFilePath(String filePath) { this.filePath.setText(filePath); }
+        void setFilePath(String filePath) {
+            this.filePath.setText(filePath);
+        }
 
-        void setTimestamp(String timestamp) { this.timestamp.setText(timestamp); }
+        void setTimestamp(String timestamp) {
+            this.timestamp.setText(timestamp);
+        }
     }
 }

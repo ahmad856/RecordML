@@ -176,16 +176,9 @@ public class DownloadFiles extends AppCompatActivity implements OnCompleteListen
             }
         }
         if(allDownloaded){
-
-
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //loading progressbar
-
-
-                    //
                     Intent intent = new Intent(DownloadFiles.this, RecordingsListView.class);
                     startActivity(intent);
                     finish();

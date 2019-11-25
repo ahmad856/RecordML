@@ -49,43 +49,10 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
     public Map<String, Recording> downloadedFiles;
     private File file;
     private String name;
-    //BroadcastReceiver download;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*download = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (action.equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
-                    Log.d("Download", "Successfull");
-                    DownloadManager.Query query = new DownloadManager.Query();
-                    query.setFilterById(intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0));
-                    DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                    Cursor cursor = manager.query(query);
-                    if (cursor.moveToFirst()) {
-                        if (cursor.getCount() > 0) {
-                            int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-                            if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                                String file = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_TITLE));
-                                Log.d("Downloaded",file);
-                                if(downloadedFiles.get(file)!=null && !downloadedFiles.get(file).isDownloaded()){
-                                    downloadedFiles.get(file).setDownloaded(true);
-                                    onDownloadComplete(file);
-                                }
-                            } else {
-                                int message = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
-                                // So something here on failed.
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        registerReceiver(download, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));*/
 
         setContentView(R.layout.activity_recordings_list_view);
         items = new ArrayList<>();
@@ -118,9 +85,8 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
             public void onClick(View view) {
 
 //                new GetAudioText(RecordingsListView.this, Constants.PATH+"test.3gp").execute(R.raw.credential);
-                startActivity(new Intent(RecordingsListView.this, MainActivity.class));
-
-//                startActivityForResult(new Intent(RecordingsListView.this, AddRecording.class), 123);
+//                startActivity(new Intent(RecordingsListView.this, MainActivity.class));
+                startActivityForResult(new Intent(RecordingsListView.this, AddRecording.class), 123);
             }
         });
 
@@ -196,20 +162,6 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
 
     }
 
-    /*private void downloadFile(Context context, String fileName, String destinationDirectory, String url) {
-
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-        //request.setDestinationInExternalFilesDir(this, destinationDirectory, fileName);
-        request.setDestinationInExternalPublicDir(destinationDirectory, fileName);
-
-        Objects.requireNonNull(downloadManager).enqueue(request);
-    }*/
-
     @Override
     public void onComplete(@NonNull Task<ListResult> task) {
         for (StorageReference child : Objects.requireNonNull(task.getResult()).getItems()) {
@@ -237,23 +189,7 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
             //r.setEntities(entities);
             r.setCategories(categories);
 
-            if (!file.exists()) {
-//                downloadedFiles.put(child.getName(), r);
-//                //download file
-//                child.getDownloadUrl().addOnSuccessListener(
-//                        new OnSuccessListener<Uri>() {
-//                            @Override
-//                            public void onSuccess(Uri uri) {
-//                                downloadFile(RecordingsListView.this, childTmp.getName(), Constants.FOLDER_NAME, uri.toString());
-//                            }
-//                        }
-//                ).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(RecordingsListView.this, "Download Failure", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-            } else {
+            if (file.exists()) {
                 r.setDownloaded(true);
                 downloadedFiles.put(child.getName(), r);
                 String fileContent = getContentFromFile(file);
@@ -277,13 +213,6 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
         addRecording(record);
     }
 
-    public void onDownloadComplete(String fileIndex) {
-        //Recording record = downloadedFiles.get(fileIndex);
-        //new GetFileContent(this, fileIndex).execute(fileIndex);
-        //String fileContent = getContentFromFile(new File(fileIndex));
-//        new GetFileStatistics(RecordingsListView.this, fileIndex).execute(fileContent);
-    }
-
     private String getContentFromFile(File f){
         String fileContent = "";
         try {
@@ -298,12 +227,6 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
         }
         return fileContent;
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        unregisterReceiver(download);
-//    }
 
     public void setFileContent(String fileIndex, String s) {
         new GetFileStatistics(RecordingsListView.this, fileIndex).execute(s);

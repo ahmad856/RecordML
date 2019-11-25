@@ -19,8 +19,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.io.File;
 
 public class Splash extends AppCompatActivity {
-
-    //private FirebaseAuth mAuth;
     private static FirebaseStorage mStorage;
 
     public static FirebaseStorage getStorage() {
@@ -50,8 +48,6 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //mAuth = FirebaseAuth.getInstance();
     }
 
     public void createFolder(String fname) {
@@ -72,14 +68,6 @@ public class Splash extends AppCompatActivity {
 
         createFolder(Constants.FOLDER_NAME);
 
-//        FirebaseUser user = mAuth.getCurrentUser();
-//        if (user != null) {
-//            Toast.makeText(this, "Logged IN!!!!", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Please Login!!!!", Toast.LENGTH_SHORT).show();
-//            signInAnonymously();
-//        }
-
         //permissions
         if (!hasPermissions(this, PERMISSIONS))
             ActivityCompat.requestPermissions(this, PERMISSIONS, 333);
@@ -89,21 +77,6 @@ public class Splash extends AppCompatActivity {
             finish();
         }
     }
-
-//    private void signInAnonymously() {
-//        mAuth.signInAnonymously()
-//                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        Log.d("FireBaseAuth", "success");
-//                    }
-//                }).addOnFailureListener(this, new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        Log.d("FireBaseAuth", "signInAnonymously:FAILURE");
-//                    }
-//                });
-//    }
 
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {

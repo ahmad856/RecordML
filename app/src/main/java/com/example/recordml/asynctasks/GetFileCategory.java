@@ -22,6 +22,7 @@ import com.google.api.services.language.v1.model.ClassificationCategory;
 import com.google.api.services.language.v1.model.Document;
 import com.google.api.services.language.v1.model.Entity;
 import com.google.api.services.language.v1.model.Features;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -51,7 +52,10 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
                 }
             }).build();
 
-    public GetFileCategory(Context context, String inputFile) { this.context = context; this.inputFile = inputFile; }
+    public GetFileCategory(Context context, String inputFile) {
+        this.context = context;
+        this.inputFile = inputFile;
+    }
 
     private Thread mThread;
 
@@ -115,7 +119,6 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
     }
 
 
-
     private void startWorkerThread() {
         if (mThread != null) {
             return;
@@ -145,12 +148,12 @@ public class GetFileCategory extends AsyncTask<Integer, Void, String> {
     }
 
     private void deliverResponse(GenericJson response) {
-        if(response instanceof AnnotateTextResponse){
+        if (response instanceof AnnotateTextResponse) {
             List<ClassificationCategory> categoriesList = ((AnnotateTextResponse) response).getCategories();
             List<Entity> entitiesList = ((AnnotateTextResponse) response).getEntities();
 
-            if(context instanceof AddRecording)
-                ((AddRecording)context).setCategoryResponse(categoriesList, entitiesList);
+            if (context instanceof AddRecording)
+                ((AddRecording) context).setCategoryResponse(categoriesList, entitiesList);
 
 //            categoriesList.get(0).getName();
 //            entitiesList.get(0).getName();

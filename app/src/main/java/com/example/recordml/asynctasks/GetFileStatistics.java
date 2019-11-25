@@ -9,11 +9,9 @@ import com.example.recordml.activities.AddRecording;
 import com.example.recordml.activities.RecordingsListView;
 import com.example.recordml.methods.Methods;
 import com.example.recordml.models.Stats;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
@@ -39,11 +37,15 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
         fileContent = strings[0];
         String[] fileContentSplit = strings[0].split(" ");
 
-        for(String s : fileContentSplit){
-            if(!Methods.isNullOrEmplty(s)){
+        for (String s : fileContentSplit) {
+            if (!Methods.isNullOrEmpty(s)) {
                 wordCount++;
-                if (s.length() > longestWord.length()) { longestWord = s; }
-                if (s.length() < shortestWord.length()) { shortestWord = s; }
+                if (s.length() > longestWord.length()) {
+                    longestWord = s;
+                }
+                if (s.length() < shortestWord.length()) {
+                    shortestWord = s;
+                }
                 if (wordCountMap.containsKey(s)) {
                     wordCountMap.put(s, wordCountMap.get(s) + 1);
                 } else {
@@ -104,11 +106,10 @@ public class GetFileStatistics extends AsyncTask<String, Void, Stats> {
     @Override
     protected void onPostExecute(Stats stats) {
         super.onPostExecute(stats);
-        if(context instanceof AddRecording) {
+        if (context instanceof AddRecording) {
             ((AddRecording) context).setStats(stats);
-        }
-        else if(context instanceof RecordingsListView){
-            ((RecordingsListView)context).setStats(stats, fileName);
+        } else if (context instanceof RecordingsListView) {
+            ((RecordingsListView) context).setStats(stats, fileName);
         }
         progress.dismiss();
     }

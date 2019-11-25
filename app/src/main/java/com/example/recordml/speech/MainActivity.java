@@ -37,6 +37,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.recordml.R;
+import com.example.recordml.constants.Constants;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -125,8 +126,20 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     }
 
     public void stopListening(View v){
-        unbindService(mServiceConnection);
+        //unbindService(mServiceConnection);
+        //stopVoiceRecorder();
+
         stopVoiceRecorder();
+
+        // Stop Cloud Speech API
+        mSpeechService.removeListener(mSpeechServiceListener);
+        unbindService(mServiceConnection);
+        mSpeechService = null;
+
+        Intent i = new Intent();
+        i.putExtra(Constants.RECORDED_TEXT, allText.getText().toString());
+        MainActivity.this.setResult(RESULT_OK, i);
+        finish();
     }
 
     @Override
@@ -152,12 +165,12 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     @Override
     protected void onStop() {
         // Stop listening to voice
-        stopVoiceRecorder();
-
-        // Stop Cloud Speech API
-        mSpeechService.removeListener(mSpeechServiceListener);
-        unbindService(mServiceConnection);
-        mSpeechService = null;
+//        stopVoiceRecorder();
+//
+//        // Stop Cloud Speech API
+//        mSpeechService.removeListener(mSpeechServiceListener);
+//        unbindService(mServiceConnection);
+//        mSpeechService = null;
 
         super.onStop();
     }
