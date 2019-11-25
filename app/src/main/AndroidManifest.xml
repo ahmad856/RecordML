@@ -16,40 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity
-            android:name=".activities.RecordingsListView"/>
-
-        <activity
-            android:name=".activities.RecordingsTab" />
-
-        <activity
-            android:name=".activities.AddRecording" />
-
-        <activity
-            android:name=".activities.DownloadFiles" />
-
-        <activity android:name=".activities.Splash" >
+        <activity android:name=".speech.MainActivity"></activity>
+        <activity android:name=".activities.RecordingsListView" />
+        <activity android:name=".activities.RecordingsTab" />
+        <activity android:name=".activities.AddRecording" />
+        <activity android:name=".activities.DownloadFiles" />
+        <activity android:name=".activities.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-<!--        <receiver android:name=".broascastrecievers.Download"-->
-<!--            android:priority="1000">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
-<!--        <receiver android:name=".activities.RecordingsListView$Download"-->
-<!--            android:priority="1000">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
+        <service android:name=".speech.SpeechService"/>
     </application>
 
 </manifest>

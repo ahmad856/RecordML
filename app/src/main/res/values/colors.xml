@@ -3,4 +3,7 @@
     <color name="colorPrimary">#FF0000</color>
     <color name="colorPrimaryDark">#FFCC0000</color>
     <color name="colorAccent">#FFFFFF</color>SS
+
+    <color name="status_hearing">#7B1FA2</color>
+    <color name="status_not_hearing">#757575</color>
 </resources>

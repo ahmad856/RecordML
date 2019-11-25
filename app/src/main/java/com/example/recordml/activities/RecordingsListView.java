@@ -21,6 +21,7 @@ import com.example.recordml.asynctasks.GetFileStatistics;
 import com.example.recordml.constants.Constants;
 import com.example.recordml.models.Recording;
 import com.example.recordml.models.Stats;
+import com.example.recordml.speech.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -115,7 +116,11 @@ public class RecordingsListView extends AppCompatActivity implements RecyclerVie
         addRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(RecordingsListView.this, AddRecording.class), 123);
+
+//                new GetAudioText(RecordingsListView.this, Constants.PATH+"test.3gp").execute(R.raw.credential);
+                startActivity(new Intent(RecordingsListView.this, MainActivity.class));
+
+//                startActivityForResult(new Intent(RecordingsListView.this, AddRecording.class), 123);
             }
         });
 

@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.recordml"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -18,15 +19,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    packagingOptions {
-//        exclude 'META-INF/INDEX.LIST'
-//        exclude 'META-INF/DEPENDENCIES'
-//    }
 }
 
 ext {
     supportLibraryVersion = '25.3.1'
     googleApiClientVersion = '1.22.0'
+    grpcVersion = '1.4.0'
+}
+
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.3.0'
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+                grpc {
+                    // Options added to --grpc_out
+                    option 'lite'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -47,13 +71,25 @@ dependencies {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
-    compile("com.google.api-client:google-api-client-android:$googleApiClientVersion"){
+    compile("com.google.api-client:google-api-client-android:$googleApiClientVersion") {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
     compile("com.google.apis:google-api-services-language:v1-rev501-1.25.0") {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
+    }
+
+    // gRPC
+    compile "io.grpc:grpc-okhttp:$grpcVersion"
+    compile "io.grpc:grpc-protobuf-lite:$grpcVersion"
+    compile "io.grpc:grpc-stub:$grpcVersion"
+    compile 'javax.annotation:javax.annotation-api:1.2'
+    protobuf 'com.google.protobuf:protobuf-java:3.3.1'
+
+    // OAuth2 for Google API
+    compile('com.google.auth:google-auth-library-oauth2-http:0.7.0') {
+        exclude module: 'httpclient'
     }
 
 }
@@ -66,4 +102,3 @@ task copySecretKey(type: Copy) {
     rename secretKey.getName(), "credential.json"
 }
 preBuild.dependsOn(copySecretKey)
-
