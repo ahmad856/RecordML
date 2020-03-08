@@ -6,16 +6,15 @@ public class Recording implements Serializable {
     private String stamp;
     private String voiceFilePath;
     private String txtFilePath;
-    private Stats stats;
     private String txtFileName;
     private String categories;
     private String entities;
+    private Stats stats;
+    private boolean downloaded;
 
     public boolean isDownloaded() { return downloaded; }
 
     public void setDownloaded(boolean downloaded) { this.downloaded = downloaded; }
-
-    private boolean downloaded;
 
     public String getCategories() { return categories; }
 

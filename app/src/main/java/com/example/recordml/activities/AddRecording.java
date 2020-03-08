@@ -50,22 +50,14 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
     static final String RECORD_KEY = "record";
 
     private Button record, add;
-    //play, stop,
-    //private Button translate;
-    //private MediaRecorder myAudioRecorder;
-    //private String outputFileAudio, outputFileTxt;
     private String date;
     private Stats stats;
-    //private MediaPlayer mediaPlayer;
 
     private StorageReference mStorage;
 
-    /////////////////categories
     List<ClassificationCategory> categoriesList;
     List<Entity> entitiesList;
-    //    String entities = "";
     String categories = "";
-
 
     @SuppressLint("SimpleDateFormat")
     private final DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
@@ -79,92 +71,25 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         setOnClickListeners();
 
         date = df.format(Calendar.getInstance().getTime());
-
-//        File file = new File(Constants.PATH, date + Constants.EXTENTION_TXT);
-//        try {
-//            if (file.createNewFile()) {
-//                Log.d("File", "file is created");
-//            } else {
-//                Log.d("File", "file is already present");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        //outputFileAudio = Constants.PATH + date + Constants.EXTENTION_3GP;
-        //outputFileTxt = Constants.PATH + date + Constants.EXTENTION_TXT;
     }
 
     private void initialize() {
         mStorage = Splash.getStorage().getReference();
 
-//        play = findViewById(R.id.play);
-//        stop = findViewById(R.id.stop);
         record = findViewById(R.id.record);
         add = findViewById(R.id.add);
 
         add.setEnabled(false);
-
-        //translate = findViewById(R.id.translate);
-//        stop.setEnabled(false);
-//        play.setEnabled(false);
-        //add.setEnabled(false);
     }
 
     private void setOnClickListeners() {
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivityForResult(new Intent(AddRecording.this, MainActivity.class), 456);
-
-                //voiceToText();
-//                myAudioRecorder = new MediaRecorder();
-//                myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//                myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//                myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-//                myAudioRecorder.setOutputFile(outputFile);
-//                try {
-//                    myAudioRecorder.prepare();
-//                    myAudioRecorder.start();
-//                } catch (IllegalStateException | IOException ise) {
-//                    ise.printStackTrace();
-//                }
                 record.setEnabled(false);
-                //stop.setEnabled(true);
             }
         });
-
-//        stop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                myAudioRecorder.stop();
-////                myAudioRecorder.release();
-////                myAudioRecorder = null;
-//                record.setEnabled(true);
-//                stop.setEnabled(false);
-//                play.setEnabled(true);
-//                //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
-//        play.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                record.setEnabled(false);
-//                stop.setEnabled(false);
-//
-////                mediaPlayer = new MediaPlayer();
-////                mediaPlayer.setOnCompletionListener(AddRecording.this);
-////                try {
-////                    mediaPlayer.setDataSource(outputFile);
-////                    mediaPlayer.prepare();
-////                    mediaPlayer.start();
-////                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
-////                } catch (Exception e) {
-////                    e.printStackTrace();
-////                }
-//            }
-//        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,13 +98,13 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 r.setStamp(date);
                 r.setTxtFilePath(Constants.PATH);
                 r.setStats(stats);
-                if (categoriesList != null) for (ClassificationCategory cc : categoriesList) {
-                    categories = categories + cc.getName().replaceAll("/", "") + ",";
+                if (categoriesList != null) {
+                    for (ClassificationCategory cc : categoriesList) {
+                        categories = categories + cc.getName().replaceAll("/", "") + ",";
+                    }
                 }
 
                 r.setCategories(categories);
-//                r.setEntities(entities);
-                //+"~"+entities
                 r.setTxtFileName(date + Constants.EXTENTION_TXT);
 
                 File file = new File(Constants.PATH, date + "~" + categories + Constants.EXTENTION_TXT);
@@ -199,7 +124,6 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 }
 
                 Uri uri = Uri.fromFile(file);
-                //+"~"+entities
                 StorageReference textSumary = mStorage.child("TextSummarization/" + date + "~" + categories + Constants.EXTENTION_TXT);
 
                 textSumary.putFile(uri)
@@ -214,38 +138,13 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                                 exception.printStackTrace();
                             }
                         });
-
-
                 Intent i = new Intent();
                 i.putExtra(RECORD_KEY, r);
                 AddRecording.this.setResult(RESULT_OK, i);
                 finish();
             }
         });
-
-//        translate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                translateToText();
-//            }
-//        });
     }
-
-/*    private void voiceToText() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
-//        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, Long.valueOf(10000));
-//        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, Long.valueOf(10000));
-
-        try {
-            startActivityForResult(intent, 101);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Your device doesn't support Speech to Text", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }*/
 
     public static void writeFile(File file, String s) throws IOException {
         FileOutputStream fos = new FileOutputStream(file, true);
@@ -268,58 +167,7 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
                 new GetFileStatistics(this, null).execute(((TextView) findViewById(R.id.textViewCheck)).getText().toString());
             }
         }
-
-        /*if (requestCode == 101 && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            ////stop recording////
-            //////////////////////
-//            myAudioRecorder.stop();
-//            myAudioRecorder.release();
-//            myAudioRecorder = null;
-            record.setEnabled(true);
-//            stop.setEnabled(false);
-//            play.setEnabled(true);
-            //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
-            //////////////////////
-
-            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (result != null) {
-                ((TextView) findViewById(R.id.textViewCheck)).setText(((TextView) findViewById(R.id.textViewCheck)).getText().toString() + " " + result.get(0));
-                if (((TextView) findViewById(R.id.textViewCheck)).getText().toString().length() > 0)
-                    add.setEnabled(true);
-                new GetFileStatistics(this, null).execute(((TextView) findViewById(R.id.textViewCheck)).getText().toString());
-            }
-
-
-//            try {
-//                writeFile(outputFileTxt, result.get(0));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
-            //Async Task for file statistics
-            //+"~"+entities
-//            new GetFileStatistics(this, date + "~"+categories + Constants.EXTENTION_TXT).execute(outputFileTxt);
-
-        }*/
     }
-
-//    private void translateToText() {
-//        voiceToText();
-//
-//        record.setEnabled(false);
-//        stop.setEnabled(false);
-//
-////        mediaPlayer = new MediaPlayer();
-////        mediaPlayer.setOnCompletionListener(AddRecording.this);
-////        try {
-////            mediaPlayer.setDataSource(outputFile);
-////            mediaPlayer.prepare();
-////            mediaPlayer.start();
-////            Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
-////        } catch (Exception e) {
-////            e.printStackTrace();
-////        }
-//    }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
@@ -330,12 +178,10 @@ public class AddRecording extends AppCompatActivity implements MediaPlayer.OnCom
         this.stats = stats;
         //Async Task for file categories
         new GetFileCategory(this, stats.getFileContent()).execute(R.raw.credential);
-        //add.setEnabled(true);
     }
 
     public void setCategoryResponse(List<ClassificationCategory> categoriesList, List<Entity> entitiesList) {
         this.categoriesList = categoriesList;
         this.entitiesList = entitiesList;
-        //add.setEnabled(true);
     }
 }
